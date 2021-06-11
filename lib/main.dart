@@ -57,8 +57,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: GestureDetector(
                     onTap: () {
                       DriverAuthService().registerNewDriver(this.driver);
-
-                      print(DriverAuthService().getToken());
                     },
                     child: Center(
                       child: Text('register',

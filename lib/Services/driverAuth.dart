@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 //import 'package:firebase_core/firebase_core.dart';
 import 'package:gas_stop/Models/driver.dart';
+import 'package:gas_stop/models/payload.dart';
 
 class DriverAuthService {
   Dio dio = new Dio(); //Dio is a package that can be use to do HTTP request
@@ -46,14 +47,15 @@ class DriverAuthService {
  * then sends the driver data to firestore 
  */
   registerNewDriver(Driver driver) async {
+    Payload payload = new Payload();
     try {
-      await dio.post(
+      return await dio.post(
           'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB8HDirLfsQQLCdglfrzukd8bv_CSuHHr0',
           data: {
             "email": driver.email,
             "password": driver.password,
             "returnSecureToken": true
-          });
+          }).then((value) => print(value));
     } on DioError catch (err) {
       Fluttertoast.showToast(
           msg: err.response!.data['message'],
