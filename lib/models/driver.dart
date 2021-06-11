@@ -5,6 +5,5 @@ class Driver {
   late String password;
   late String email;
   late String carType;
-
-  Driver(name, password, email, carType);
+  late String token;
 }

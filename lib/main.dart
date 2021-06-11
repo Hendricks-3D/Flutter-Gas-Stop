@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'Services/driverAuth.dart';
 import 'package:gas_stop/Models/driver.dart';
 
 //import 'package:adobe_xd/adobe_xd.dart';
 
-void main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+void main() {
   runApp(MyApp());
 }
 
@@ -34,11 +32,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Driver driver =
-      new Driver("bobby", "bobby@gmail.com", "bobbypassword", "Benz");
-
+  late Driver driver = new Driver();
+  var token;
   @override
   Widget build(BuildContext context) {
+    this.driver.name = "bobby";
+    this.driver.email = "bobby@gmail.com";
+    this.driver.password = "bobbypassword";
+    this.driver.carType = "Benz";
     return Scaffold(
         appBar: AppBar(
           title: Text('Gas Stop'),
@@ -55,28 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   elevation: 7.0,
                   child: GestureDetector(
                     onTap: () {
-                      DriverAuthService()
-                          .registerNewDriver(this.driver)
-                          .then((val) {
-                        if (val.data['success']) {
-                          // this.user.token = val.data['token'];
-                          Fluttertoast.showToast(
-                              msg: 'driver Registered',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.grey[600],
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        } else {
-                          Fluttertoast.showToast(
-                              msg: 'authentication failed',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.grey[600],
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        }
-                      });
+                      DriverAuthService().registerNewDriver(this.driver);
+
+                      print(DriverAuthService().getToken());
                     },
                     child: Center(
                       child: Text('register',
@@ -99,13 +81,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   elevation: 7.0,
                   child: GestureDetector(
                     onTap: () {
-                      DriverAuthService()
-                          .signInWithEmailPassword(this.driver)
-                          .then((val) {
+                      DriverAuthService().signInDriver(this.driver).then((val) {
                         if (val.data['success']) {
                           // this.user.token = val.data['token'];
                           Fluttertoast.showToast(
-                              msg: 'user Login',
+                              msg: 'user Logged in',
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
                               backgroundColor: Colors.grey[600],
