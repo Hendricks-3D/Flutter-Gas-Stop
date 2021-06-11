@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gas_stop">
+    package="com.kod3xmediatechnology.gas_stop">
    <application
         android:label="gas_stop"
         android:icon="@mipmap/ic_launcher">

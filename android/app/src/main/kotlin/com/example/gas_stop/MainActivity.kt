@@ -1,4 +1,4 @@
-package com.example.gas_stop
+package com.kod3xmediatechnology.gas_stop
 
 import io.flutter.embedding.android.FlutterActivity
 
