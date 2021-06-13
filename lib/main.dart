@@ -22,17 +22,17 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/signup': (BuildContext context) => new SignupPage(),
       },
-      home: MyHomePage(),
+      home: LoginPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LoginPageState extends State<LoginPage> {
   late Driver driver = new Driver();
   var token;
   @override

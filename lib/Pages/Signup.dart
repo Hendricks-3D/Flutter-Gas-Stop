@@ -3,6 +3,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_stop/Models/driver.dart';
 
+//import 'package:adobe_xd/adobe_xd.dart';
+
+class SignupApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SignupPage(),
+    );
+  }
+}
+
 class SignupPage extends StatefulWidget {
   @override
   _SignupPageState createState() => _SignupPageState();
@@ -99,19 +111,20 @@ class _SignupPageState extends State<SignupPage> {
             ),
           ),
           Pinned.fromPins(
-            Pin(size: 197.0, middle: 0.5065),
-            Pin(size: 17.0, end: 69.0),
-            child: Text(
-              'Already have an account? Login',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 12,
-                color: const Color(0xb1ffc045),
-                fontWeight: FontWeight.w700,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
+              Pin(size: 197.0, middle: 0.5065), Pin(size: 17.0, end: 69.0),
+              child: GestureDetector(
+                onTap: () => {Navigator.of(context).pop()},
+                child: Text(
+                  'Already have an account? Login',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 12,
+                    color: const Color(0xb1ffc045),
+                    fontWeight: FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              )),
           Pinned.fromPins(
             Pin(start: 33.5, end: 33.5),
             Pin(size: 30.7, middle: 0.5024),
