@@ -200,7 +200,7 @@ class _SignupPageState extends State<SignupPage> {
                       Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: const AssetImage(''),
+                        image: const AssetImage('google.png'),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -235,7 +235,7 @@ class _SignupPageState extends State<SignupPage> {
                       Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: const AssetImage(''),
+                        image: const AssetImage('facebook.png'),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -266,7 +266,7 @@ class _SignupPageState extends State<SignupPage> {
                 Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage(''),
+                  image: const AssetImage('car.png'),
                   fit: BoxFit.fill,
                 ),
               ),
