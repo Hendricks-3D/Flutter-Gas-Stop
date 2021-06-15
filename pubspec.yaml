@@ -1,4 +1,4 @@
-name: gas_stop
+name: GasStop
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -49,9 +49,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-  - assets/car.png
-  - assets/facebook.png
-  - assets/google.png
+     - assets/car.png
+     - assets/facebook.png
+     - assets/google.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

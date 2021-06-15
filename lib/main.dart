@@ -1,10 +1,8 @@
+import 'package:GasStop/models/driver.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'Pages/Signup.dart';
-import 'Services/driverAuth.dart';
-import 'package:gas_stop/Models/driver.dart';
 
 //import 'package:adobe_xd/adobe_xd.dart';
 
@@ -284,7 +282,7 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: const AssetImage('google.png'),
+                        image: const AssetImage('assets/google.png'),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -319,7 +317,7 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: const AssetImage('facebook.png'),
+                        image: const AssetImage('assets/facebook.png'),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -364,7 +362,7 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('car.png'),
+                  image: const AssetImage('assets/car.png'),
                   fit: BoxFit.fill,
                 ),
               ),

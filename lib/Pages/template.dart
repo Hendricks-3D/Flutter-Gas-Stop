@@ -3,8 +3,8 @@ Stateful widget templete.
 Makes its easier to convert XD UI to stateful widgets
 */
 
+import 'package:GasStop/models/driver.dart';
 import 'package:flutter/material.dart';
-import 'package:gas_stop/Models/driver.dart';
 
 //import 'package:adobe_xd/adobe_xd.dart';
 

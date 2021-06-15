@@ -1,10 +1,10 @@
+import 'package:GasStop/models/driver.dart';
+import 'package:GasStop/models/payload.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 //import 'package:firebase_core/firebase_core.dart';
-import 'package:gas_stop/Models/driver.dart';
-import 'package:gas_stop/models/payload.dart';
 
 class DriverAuthService {
   Dio dio = new Dio(); //Dio is a package that can be use to do HTTP request
