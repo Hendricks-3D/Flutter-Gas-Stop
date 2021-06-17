@@ -120,7 +120,6 @@ class _LoginPageState extends State<LoginPage> {
                         height: 50.0,
                         child: Material(
                             borderRadius: BorderRadius.circular(20),
-                            shadowColor: Colors.greenAccent,
                             color: const Color(0xffffc045),
                             elevation: 7.0,
                             child: GestureDetector(

@@ -1,15 +1,23 @@
 import 'package:GasStop/models/driver.dart';
-import 'package:adobe_xd/pinned.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:adobe_xd/adobe_xd.dart';
 
 class SignupApp extends StatelessWidget {
+  ThemeData _light = ThemeData.light().copyWith(
+    primaryColor: Colors.green,
+  );
+  ThemeData _darkTheme = ThemeData.dark().copyWith(
+    primaryColor: Colors.blueGrey,
+  );
+  bool _isDark = true;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      //Change theme to black
+      darkTheme: _darkTheme,
+      themeMode: ThemeMode.dark,
       home: SignupPage(),
     );
   }
@@ -143,7 +151,6 @@ class _SignupPageState extends State<SignupPage> {
                         height: 50.0,
                         child: Material(
                             borderRadius: BorderRadius.circular(20),
-                            shadowColor: Colors.greenAccent,
                             color: const Color(0xffffc045),
                             elevation: 7.0,
                             child: GestureDetector(
@@ -157,7 +164,7 @@ class _SignupPageState extends State<SignupPage> {
                               ),
                             ))),
 
-                    SizedBox(height: 20.0), //Gives space between two widgets
+                    /* SizedBox(height: 20.0), //Gives space between two widgets
 
                     //Facebook login button
                     Container(
@@ -183,8 +190,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: 15.0), //Gives space between two widgets
+                    ),*/
                   ])),
             ]),
           )
