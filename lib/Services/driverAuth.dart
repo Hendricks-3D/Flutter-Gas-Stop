@@ -1,6 +1,6 @@
 import 'package:GasStop/models/driver.dart';
-import 'package:GasStop/models/payload.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -10,6 +10,10 @@ class DriverAuthService {
   Dio dio = new Dio(); //Dio is a package that can be use to do HTTP request
   //Urls urls = new Urls();
   String token = ''; //the token will be updated on registration and sign up
+  final FirebaseAuth _firebaseAuth;
+
+  DriverAuthService(this._firebaseAuth);
+  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
   //Method that will get the new
   addNewDriver(Driver user, token) async {
@@ -40,34 +44,31 @@ class DriverAuthService {
  * Method that sign in user with email andn password
  * then get the token 
  */
-  signInDriver(Driver driver) async {} //end of sign in
+  Future<String?> signInDriver(String email, String password) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      print('sign in complete');
+      return "signed in";
+    } on FirebaseAuthException catch (err) {
+      return err.message;
+    }
+  } //end of sign in
 
 /**
  * Method that register a new driver on firebase autheneication  db
  * then sends the driver data to firestore 
  */
-  registerNewDriver(Driver driver) async {
-    Payload payload = new Payload();
+  Future<String?> registerNewDriver(String email, String password) async {
     try {
-      return await dio.post(
-          'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB8HDirLfsQQLCdglfrzukd8bv_CSuHHr0',
-          data: {
-            "email": driver.email,
-            "password": driver.password,
-            "returnSecureToken": true
-          }).then((value) => print(value));
-    } on DioError catch (err) {
-      Fluttertoast.showToast(
-          msg: err.response!.data['message'],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) => (value) => {print(value)});
+
+      return "signed in";
+    } on FirebaseAuthException catch (err) {
+      return err.message;
     }
   } //end of register
 
-  String getToken() {
-    return 'token: ' + token;
-  }
 } //End AuthService

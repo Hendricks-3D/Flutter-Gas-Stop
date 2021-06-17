@@ -1,36 +1,62 @@
-import 'package:GasStop/models/driver.dart';
-import 'package:adobe_xd/pinned.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+//Flutter package imports
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-//import 'package:adobe_xd/adobe_xd.dart';
+//My Imports
+import 'package:GasStop/Services/driverAuth.dart';
+import 'package:GasStop/models/driver.dart';
+import 'Signup.dart';
+/*
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}*/
 
-class SignupApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  ThemeData _light = ThemeData.light().copyWith(
+    primaryColor: Colors.green,
+  );
+  ThemeData _darkTheme = ThemeData.dark().copyWith(
+    primaryColor: Colors.blueGrey,
+  );
+  bool _isDark = true;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SignupPage(),
+
+      //Change theme to black
+      darkTheme: _darkTheme,
+      themeMode: ThemeMode.dark,
+      //Navigator routes setup
+      routes: <String, WidgetBuilder>{
+        '/signup': (BuildContext context) => new SignupPage(),
+      },
+      home: LoginPage(),
     );
   }
 }
 
-class SignupPage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _SignupPageState createState() => _SignupPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _LoginPageState extends State<LoginPage> {
   late Driver driver = new Driver();
-  var token;
   late TextEditingController emailController = new TextEditingController();
   late TextEditingController passwordController = new TextEditingController();
-  late TextEditingController confirmPasswordController =
-      new TextEditingController();
-  late TextEditingController userNameController = new TextEditingController();
-  late TextEditingController carTypeController = new TextEditingController();
+  late final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  var token;
   @override
   Widget build(BuildContext context) {
+    this.driver.name = "bobby";
+    this.driver.email = "bobby@gmail.com";
+    this.driver.password = "bobbypassword";
+    this.driver.carType = "Benz";
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
@@ -51,13 +77,13 @@ class _SignupPageState extends State<SignupPage> {
               //login text container
               Container(
                   padding: EdgeInsets.fromLTRB(15.0, 225.0, 0.0, 0.0),
-                  child: Text('Sign Up',
+                  child: Text('Login',
                       style: TextStyle(
                           fontSize: 50.0, fontWeight: FontWeight.bold))),
 
               //Dot text container
               Container(
-                  padding: EdgeInsets.fromLTRB(200.0, 195.0, 0.0, 0.0),
+                  padding: EdgeInsets.fromLTRB(150.0, 195.0, 0.0, 0.0),
                   child: Text('.',
                       style: TextStyle(
                           fontSize: 80.0,
@@ -94,51 +120,22 @@ class _SignupPageState extends State<SignupPage> {
                               borderSide: BorderSide(color: Colors.white))),
                       obscureText: true,
                     ),
+                    SizedBox(height: 5.0), //Gives space between two widgets
 
-                    SizedBox(height: 20.0), //Gives space between two widgets
-                    //Password text field
-                    TextField(
-                      controller: this.passwordController,
-                      decoration: InputDecoration(
-                          labelText: 'Confirm Password',
-                          labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
+                    //forgot password link/ InkWell
+                    Container(
+                        alignment: Alignment(1.0, 0.0), //align right
+                        padding: EdgeInsets.only(top: 15.0, left: 20.0),
+                        child: InkWell(
+                            child: Text('Forgot Password',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                    color: const Color(0xffffc045))))),
 
-                          //Change textfield border to green
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white))),
-                      obscureText: true,
-                    ),
-                    SizedBox(height: 20.0), //Gives space between two widgets
-                    //Password text field
-                    TextField(
-                      controller: this.userNameController,
-                      decoration: InputDecoration(
-                          labelText: 'User Name',
-                          labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
+                    SizedBox(height: 40.0), //Gives space between two widgets
 
-                          //Change textfield border to green
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white))),
-                      obscureText: true,
-                    ),
-                    SizedBox(height: 20.0), //Gives space between two widgets
-                    //Password text field
-                    TextField(
-                      controller: this.carTypeController,
-                      decoration: InputDecoration(
-                          labelText: 'Car Name',
-                          labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
-
-                          //Change textfield border to green
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white))),
-                      obscureText: true,
-                    ),
-                    SizedBox(height: 20.0), //Gives space between two widgets
-                    //sign up Button
+                    //Login Button
                     Container(
                         height: 50.0,
                         child: Material(
@@ -147,18 +144,21 @@ class _SignupPageState extends State<SignupPage> {
                             color: const Color(0xffffc045),
                             elevation: 7.0,
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                DriverAuthService(this._firebaseAuth)
+                                    .signInDriver(
+                                        this.emailController.text.trim(),
+                                        this.passwordController.text.trim());
+                              },
                               child: Center(
-                                child: Text('Sign Up',
+                                child: Text('LOGIN',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20.0)),
                               ),
                             ))),
-
                     SizedBox(height: 20.0), //Gives space between two widgets
-
                     //Facebook login button
                     Container(
                       height: 80.0,
@@ -173,7 +173,7 @@ class _SignupPageState extends State<SignupPage> {
                               size: 150.0,
                             ),
                           ),
-                          // SizedBox(width: 10.0), //Gives space
+                          //   SizedBox(width: 10.0), //Gives space
                           //adding the text
                           Container(
                             child: ImageIcon(
@@ -185,9 +185,27 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ),
                     SizedBox(height: 15.0), //Gives space between two widgets
+                    //Footer link
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('New To GasStop', style: TextStyle()),
+                          SizedBox(width: 5.0),
+                          InkWell(
+                              onTap: () {
+                                Navigator.of(context).pushNamed('/signup');
+                              },
+                              child: Text(
+                                'Register',
+                                style: TextStyle(
+                                    color: const Color(0xffffc045),
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline),
+                              ))
+                        ])
                   ])),
             ]),
           )
         ]));
-  }
+  } //end build method
 }
