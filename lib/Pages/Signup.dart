@@ -1,4 +1,6 @@
+import 'package:GasStop/Services/driverAuth.dart';
 import 'package:GasStop/models/driver.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:adobe_xd/adobe_xd.dart';
@@ -31,12 +33,14 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   late Driver driver = new Driver();
   var token;
+  var confirmPassword;
   late TextEditingController emailController = new TextEditingController();
   late TextEditingController passwordController = new TextEditingController();
   late TextEditingController confirmPasswordController =
       new TextEditingController();
   late TextEditingController userNameController = new TextEditingController();
   late TextEditingController carTypeController = new TextEditingController();
+  late final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +110,7 @@ class _SignupPageState extends State<SignupPage> {
                     SizedBox(height: 20.0), //Gives space between two widgets
                     //Password text field
                     TextField(
-                      controller: this.passwordController,
+                      controller: this.confirmPasswordController,
                       decoration: InputDecoration(
                           labelText: 'Confirm Password',
                           labelStyle: TextStyle(
@@ -129,7 +133,6 @@ class _SignupPageState extends State<SignupPage> {
                           //Change textfield border to green
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white))),
-                      obscureText: true,
                     ),
                     SizedBox(height: 20.0), //Gives space between two widgets
                     //Password text field
@@ -143,7 +146,6 @@ class _SignupPageState extends State<SignupPage> {
                           //Change textfield border to green
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white))),
-                      obscureText: true,
                     ),
                     SizedBox(height: 20.0), //Gives space between two widgets
                     //sign up Button
@@ -154,7 +156,25 @@ class _SignupPageState extends State<SignupPage> {
                             color: const Color(0xffffc045),
                             elevation: 7.0,
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                //TODO:Wrap all this in if-statement to test password
+
+                                this.confirmPassword =
+                                    this.confirmPasswordController.text.trim();
+                                //assign text fields values to driver object
+                                this.driver.name =
+                                    this.userNameController.text.trim();
+                                this.driver.email =
+                                    this.emailController.text.trim();
+                                this.driver.password =
+                                    this.passwordController.text.trim();
+                                this.driver.carType =
+                                    this.carTypeController.text.trim();
+
+                                //register driver
+                                DriverAuthService(this._firebaseAuth)
+                                    .registerNewDriver(driver);
+                              },
                               child: Center(
                                 child: Text('Sign Up',
                                     style: TextStyle(

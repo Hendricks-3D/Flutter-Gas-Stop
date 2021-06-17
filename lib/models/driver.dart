@@ -6,4 +6,5 @@ class Driver {
   late String email;
   late String carType;
   late String token;
+  late String id;
 }

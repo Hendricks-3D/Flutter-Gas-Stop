@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:GasStop/models/driver.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +13,7 @@ class DriverAuthService {
   //Urls urls = new Urls();
   String token = ''; //the token will be updated on registration and sign up
   final FirebaseAuth _firebaseAuth;
-
+  late String? id;
   DriverAuthService(this._firebaseAuth);
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
@@ -20,7 +22,9 @@ class DriverAuthService {
     dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       return await dio.post(
-        'https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' + '/addUser',
+        'https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
+            '/addUser/' +
+            user.id,
         data: {
           "name": user.name,
           "email": user.email,
@@ -40,33 +44,101 @@ class DriverAuthService {
     }
   } //add new user
 
-/**
+  //Method that will get the new
+  getCurrentDriver(token, uid) async {
+    dio.options.headers['Authorization'] = 'Bearer $token';
+    print(uid);
+    try {
+      return await dio
+          .get(
+            'https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
+                '/getCurrentUser/' +
+                uid,
+          )
+          .then((val) => print(val.data));
+    } on DioError catch (err) {
+      Fluttertoast.showToast(
+          msg: 'Error getting user',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  } //add new user
+
+/*
  * Method that sign in user with email andn password
  * then get the token 
  */
   Future<String?> signInDriver(String email, String password) async {
+    late Driver driver = new Driver();
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
-      print('sign in complete');
-      return "signed in";
+      await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) => {
+                this.id = value.user?.uid,
+                this._firebaseAuth.currentUser?.getIdToken().then(
+                    (token) => this.getCurrentDriver(token, value.user?.uid)),
+
+                //  print(value.user?.uid)
+              });
+      Fluttertoast.showToast(
+          msg: 'Welcome',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
+      return this.id;
     } on FirebaseAuthException catch (err) {
+      Fluttertoast.showToast(
+          msg: 'Please check email and password.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
       return err.message;
     }
   } //end of sign in
 
-/**
+/*
  * Method that register a new driver on firebase autheneication  db
  * then sends the driver data to firestore 
  */
-  Future<String?> registerNewDriver(String email, String password) async {
+  Future<String?> registerNewDriver(Driver driver) async {
     try {
+      print(driver.email + ' ' + driver.password);
       await _firebaseAuth
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((value) => (value) => {print(value)});
+          .createUserWithEmailAndPassword(
+              email: driver.email, password: driver.password)
+          .then((value) => {
+                driver.id = value.user!.uid,
+                print(driver.id),
+                //Send user data to the API
+                this._firebaseAuth.currentUser?.getIdToken().then((token) =>
+                    {this.token = token, this.addNewDriver(driver, token)})
+              });
 
-      return "signed in";
+      //Print toast message to user
+      Fluttertoast.showToast(
+          msg: 'Registration completed.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return "registered";
     } on FirebaseAuthException catch (err) {
+      Fluttertoast.showToast(
+          msg: 'Registration failed',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
       return err.message;
     }
   } //end of register
