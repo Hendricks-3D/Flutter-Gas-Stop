@@ -1,6 +1,5 @@
 //Flutter package imports
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 //My Imports
@@ -15,26 +14,10 @@ Future<void> main() async {
 }*/
 
 class MyApp extends StatelessWidget {
-  ThemeData _light = ThemeData.light().copyWith(
-    primaryColor: Colors.green,
-  );
-  ThemeData _darkTheme = ThemeData.dark().copyWith(
-    primaryColor: Colors.blueGrey,
-  );
-  bool _isDark = true;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
-      //Change theme to black
-      darkTheme: _darkTheme,
-      themeMode: ThemeMode.dark,
-      //Navigator routes setup
-      routes: <String, WidgetBuilder>{
-        '/signup': (BuildContext context) => new SignupPage(),
-      },
       home: LoginPage(),
     );
   }
@@ -51,12 +34,9 @@ class _LoginPageState extends State<LoginPage> {
   late TextEditingController passwordController = new TextEditingController();
   late final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   var token;
+
   @override
   Widget build(BuildContext context) {
-    this.driver.name = "bobby";
-    this.driver.email = "bobby@gmail.com";
-    this.driver.password = "bobbypassword";
-    this.driver.carType = "Benz";
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
@@ -193,7 +173,13 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(width: 5.0),
                           InkWell(
                               onTap: () {
-                                Navigator.of(context).pushNamed('/signup');
+                                //Navigator.of(context).pushNamed('/signup');
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignupApp()),
+                                );
                               },
                               child: Text(
                                 'Register',

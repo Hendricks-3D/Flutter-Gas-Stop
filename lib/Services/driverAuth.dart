@@ -71,4 +71,8 @@ class DriverAuthService {
     }
   } //end of register
 
+//Sign out user
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
+  }
 } //End AuthService
