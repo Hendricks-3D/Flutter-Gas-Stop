@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton(
             onPressed: () {
               DriverAuthService(this._firebaseAuth).signOut();
+              //TODO:Remove user prefs
             },
             child: const Text('Sign Out'),
           ),

@@ -5,7 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+//https://flutter.dev/docs/cookbook/persistence/key-value
 //import 'package:firebase_core/firebase_core.dart';
 
 class DriverAuthService {
@@ -14,6 +16,7 @@ class DriverAuthService {
   String token = ''; //the token will be updated on registration and sign up
   final FirebaseAuth _firebaseAuth;
   late String? id;
+
   DriverAuthService(this._firebaseAuth);
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
@@ -73,13 +76,20 @@ class DriverAuthService {
  */
   Future<String?> signInDriver(String email, String password) async {
     late Driver driver = new Driver();
+    final prefs = await SharedPreferences.getInstance();
     try {
       await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) => {
                 this.id = value.user?.uid,
-                this._firebaseAuth.currentUser?.getIdToken().then(
-                    (token) => this.getCurrentDriver(token, value.user?.uid)),
+                prefs.setString(
+                    'uid',
+                    (value.user
+                        ?.uid)!), //! tells the compilier the expression cannot be null
+                this._firebaseAuth.currentUser?.getIdToken().then((token) => {
+                      this.getCurrentDriver(token, value.user?.uid),
+                      prefs.setString('token', token)
+                    }),
 
                 //  print(value.user?.uid)
               });
@@ -87,7 +97,7 @@ class DriverAuthService {
           msg: 'Welcome',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.orange,
           textColor: Colors.white,
           fontSize: 16.0);
 
@@ -116,7 +126,6 @@ class DriverAuthService {
               email: driver.email, password: driver.password)
           .then((value) => {
                 driver.id = value.user!.uid,
-                print(driver.id),
                 //Send user data to the API
                 this._firebaseAuth.currentUser?.getIdToken().then((token) =>
                     {this.token = token, this.addNewDriver(driver, token)})
@@ -127,7 +136,7 @@ class DriverAuthService {
           msg: 'Registration completed.',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.orange,
           textColor: Colors.white,
           fontSize: 16.0);
       return "registered";
