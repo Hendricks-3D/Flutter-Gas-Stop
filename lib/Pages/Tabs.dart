@@ -1,6 +1,7 @@
 import 'package:GasStop/Pages/Home.dart';
 import 'package:GasStop/Pages/Navigation.dart';
 import 'package:GasStop/Pages/TrendingGasStations.dart';
+import 'package:GasStop/Services/driverAuth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -35,8 +36,6 @@ class _TabsPageState extends State<TabsPage> {
   late final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     TrendingGasStationPage(),
@@ -53,7 +52,13 @@ class _TabsPageState extends State<TabsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gas Stop'),
+        actions: <Widget>[
+          IconButton(
+              onPressed: () {
+                DriverAuthService(_firebaseAuth).signOut();
+              },
+              icon: Icon(Icons.logout))
+        ],
         backgroundColor: Colors.grey[850],
       ),
       body: Center(
