@@ -1,8 +1,13 @@
+/*
+Stateful widget templete.
+Makes its easier to convert XD UI to stateful widgets
+*/
+
 import 'package:flutter/material.dart';
 
 //import 'package:adobe_xd/adobe_xd.dart';
 
-class Home extends StatelessWidget {
+class NavigationApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,21 +18,21 @@ class Home extends StatelessWidget {
         '/login': (BuildContext context) => new TestPage(),
         '/signup': (BuildContext context) => new SignupPage(),
       },*/
-      home: HomePage(),
+      home: NavigationPage(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class NavigationPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _NavigationPageState createState() => _NavigationPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Home page'),
+      child: Text('Navigation page'),
     );
   }
 }

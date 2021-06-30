@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //import 'package:adobe_xd/adobe_xd.dart';
 
-class Home extends StatelessWidget {
+class TrendingGasStation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,21 +13,21 @@ class Home extends StatelessWidget {
         '/login': (BuildContext context) => new TestPage(),
         '/signup': (BuildContext context) => new SignupPage(),
       },*/
-      home: HomePage(),
+      home: TrendingGasStation(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class TrendingGasStationPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _TrendingGasStationPageState createState() => _TrendingGasStationPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _TrendingGasStationPageState extends State<TrendingGasStationPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Home page'),
+      child: Text('Trending page'),
     );
   }
 }

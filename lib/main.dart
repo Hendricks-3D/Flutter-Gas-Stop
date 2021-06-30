@@ -1,5 +1,5 @@
 //Flutter package imports
-import 'package:GasStop/Pages/Home.dart';
+import 'package:GasStop/Pages/Tabs.dart';
 import 'package:GasStop/Pages/Login.dart';
 import 'package:GasStop/Services/driverAuth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -61,7 +61,7 @@ class _AuthenticationWrapper extends State<AuthenticationWrapper> {
 
     if (firebaseUser != null) {
       print('user already signed in');
-      return HomeApp();
+      return TabsApp();
     }
 
     print('no user');

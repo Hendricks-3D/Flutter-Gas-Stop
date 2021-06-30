@@ -84,8 +84,8 @@ class DriverAuthService {
                 this.id = value.user?.uid,
                 prefs.setString(
                     'uid',
-                    (value.user
-                        ?.uid)!), //! tells the compilier the expression cannot be null
+                    value.user!
+                        .uid), //! tells the compilier the expression cannot be null
                 this._firebaseAuth.currentUser?.getIdToken().then((token) => {
                       this.getCurrentDriver(token, value.user?.uid),
                       prefs.setString('token', token)
