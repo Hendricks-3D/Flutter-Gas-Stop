@@ -45,8 +45,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-            Widget>[
+        body: ListView(children: <Widget>[
           Container(
             child: Stack(children: <Widget>[
               //Car Image text container

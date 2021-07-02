@@ -1,10 +1,10 @@
 //Flutter package imports
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-
 //My Imports
 import 'package:GasStop/Services/driverAuth.dart';
 import 'package:GasStop/models/driver.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
 import 'Signup.dart';
 /*
 Future<void> main() async {
@@ -39,8 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-            Widget>[
+        body: ListView(children: <Widget>[
           Container(
             child: Stack(children: <Widget>[
               //Car Image text container

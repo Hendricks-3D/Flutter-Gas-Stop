@@ -13,12 +13,6 @@ class SignupApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
-      //Navigator routes setup
-      /*routes: <String, WidgetBuilder>{
-        '/login': (BuildContext context) => new TestPage(),
-        '/signup': (BuildContext context) => new SignupPage(),
-      },*/
       home: SignupPage(),
     );
   }

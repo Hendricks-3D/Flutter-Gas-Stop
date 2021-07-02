@@ -5,8 +5,6 @@ import 'package:GasStop/Services/driverAuth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-//import 'package:adobe_xd/adobe_xd.dart';
-
 class TabsApp extends StatelessWidget {
   ThemeData _light = ThemeData.light().copyWith(
     primaryColor: Colors.green,
