@@ -1,6 +1,6 @@
-import 'package:GasStop/Pages/Home.dart';
-import 'package:GasStop/Pages/Navigation.dart';
-import 'package:GasStop/Pages/TrendingGasStations.dart';
+import 'package:GasStop/Pages/Home/components/Home_screen.dart';
+import 'package:GasStop/Pages/Navigation/components/Navigation_screen.dart';
+import 'package:GasStop/Pages/Trending/compontents/TrendingGasStations.dart';
 import 'package:GasStop/Services/driverAuth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +52,7 @@ class _TabsPageState extends State<TabsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Gas Stop'),
         actions: <Widget>[
           IconButton(
               onPressed: () {
@@ -69,27 +70,27 @@ class _TabsPageState extends State<TabsPage> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              size: 50.0,
+              size: 40.0,
             ),
             label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.trending_up,
-              size: 50.0,
+              size: 40.0,
             ),
             label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.map,
-              size: 50.0,
+              size: 40.0,
             ),
             label: '',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: const Color(0xffffc045),
         onTap: _onItemTapped,
       ),
     );

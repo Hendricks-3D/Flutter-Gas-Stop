@@ -1,6 +1,6 @@
 //Flutter package imports
-import 'package:GasStop/Pages/Tabs.dart';
-import 'package:GasStop/Pages/Login.dart';
+import 'package:GasStop/Pages/Authenticaton/Login.dart';
+import 'package:GasStop/Pages/Tabs/components/Tabs_screen.dart';
 import 'package:GasStop/Services/driverAuth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

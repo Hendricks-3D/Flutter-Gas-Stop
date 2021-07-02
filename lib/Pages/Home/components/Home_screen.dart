@@ -27,7 +27,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Home page'),
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.album),
+              title: Text('The Enchanted Nightingale'),
+              subtitle: Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
