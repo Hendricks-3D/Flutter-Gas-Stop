@@ -62,7 +62,7 @@ class _TabsPageState extends State<TabsPage> {
         ],
         backgroundColor: Colors.grey[850],
       ),
-      body: Center(
+      body: Container(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
