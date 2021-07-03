@@ -1,4 +1,5 @@
 import 'package:GasStop/Helper/CustomColors.dart';
+import 'package:GasStop/Helper/handleGeolocation.dart';
 import 'package:flutter/material.dart';
 
 class HomeCardViewPage extends StatefulWidget {
@@ -8,6 +9,7 @@ class HomeCardViewPage extends StatefulWidget {
 
 class _HomeCardViewPageState extends State<HomeCardViewPage> {
   CustomColors customColors = new CustomColors();
+  HandleGeolocation location = new HandleGeolocation();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -90,7 +92,11 @@ class _HomeCardViewPageState extends State<HomeCardViewPage> {
                         color: customColors.mainOrange,
                         elevation: 7.0,
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            this.location.getCurrentUserLocation();
+                            print(this.location.longitude);
+                            print(this.location.latititude);
+                          },
                           child: Center(
                             child: Text('Navigate',
                                 style: TextStyle(

@@ -1,7 +1,7 @@
 import 'package:GasStop/Pages/Home/components/Home_screen.dart';
 import 'package:GasStop/Pages/Navigation/components/Navigation_screen.dart';
 import 'package:GasStop/Pages/Trending/compontents/TrendingGasStations.dart';
-import 'package:GasStop/Services/driverAuth.dart';
+import 'package:GasStop/Services/driverService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

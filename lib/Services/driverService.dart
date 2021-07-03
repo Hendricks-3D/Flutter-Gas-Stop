@@ -50,18 +50,15 @@ class DriverAuthService {
   //Method that will get the new
   getCurrentDriver(token, uid) async {
     dio.options.headers['Authorization'] = 'Bearer $token';
-    print(uid);
     try {
-      return await dio
-          .get(
-            'https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
-                '/getCurrentUser/' +
-                uid,
-          )
-          .then((val) => print(val.data));
+      return await dio.get(
+        'https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
+            '/getCurrentUser/' +
+            uid,
+      );
     } on DioError catch (err) {
       Fluttertoast.showToast(
-          msg: 'Error getting user',
+          msg: err.message,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.red,
@@ -88,10 +85,8 @@ class DriverAuthService {
                         .uid), //! tells the compilier the expression cannot be null
                 this._firebaseAuth.currentUser?.getIdToken().then((token) => {
                       this.getCurrentDriver(token, value.user?.uid),
-                      prefs.setString('token', token)
+                      setToken(token),
                     }),
-
-                //  print(value.user?.uid)
               });
       Fluttertoast.showToast(
           msg: 'Welcome',
@@ -120,7 +115,6 @@ class DriverAuthService {
  */
   Future<String?> registerNewDriver(Driver driver) async {
     try {
-      print(driver.email + ' ' + driver.password);
       await _firebaseAuth
           .createUserWithEmailAndPassword(
               email: driver.email, password: driver.password)
@@ -130,8 +124,6 @@ class DriverAuthService {
                 this._firebaseAuth.currentUser?.getIdToken().then((token) =>
                     {this.token = token, this.addNewDriver(driver, token)})
               });
-
-      //Print toast message to user
       Fluttertoast.showToast(
           msg: 'Registration completed.',
           toastLength: Toast.LENGTH_SHORT,
@@ -154,6 +146,18 @@ class DriverAuthService {
 
 //Sign out user
   Future<void> signOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
     await _firebaseAuth.signOut();
+  }
+
+  setToken(token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+  }
+
+  getToken(token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
   }
 } //End AuthService

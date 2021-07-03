@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kod3xmediatechnology.gas_stop">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
    <application
         android:label="Gas Stop"
         android:icon="@mipmap/ic_launcher">
