@@ -95,7 +95,7 @@ class _HomeCardViewPageState extends State<HomeCardViewPage> {
                           onTap: () {
                             this.location.getCurrentUserLocation();
                             print(this.location.longitude);
-                            print(this.location.latititude);
+                            print(this.location.latitude);
                           },
                           child: Center(
                             child: Text('Navigate',
