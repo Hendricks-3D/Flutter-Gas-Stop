@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   String dropdownValue = 'USLD';
   GasStationService gasStationService = new GasStationService();
   SingleStationResponse singleStationResponse = new SingleStationResponse();
-  Station station = new Station(
+  Station _station = new Station(
       telephone: '',
       email: '',
       ratings: '',
@@ -24,15 +24,15 @@ class _HomePageState extends State<HomePage> {
       latitude: '',
       reviewsAmount: '',
       id: '',
-      premium: 0.0,
-      diesel: 0.0,
+      premium: '',
+      diesel: '',
       openTime: '',
       name: '',
       password: '',
       closeTime: '',
       longitude: '',
-      ulsd: 0.0,
-      regular: 0.0);
+      ulsd: '',
+      regular: '');
   @override
   Widget build(BuildContext context) {
     /*TODO: the home screen will get the gas station
@@ -47,41 +47,58 @@ class _HomePageState extends State<HomePage> {
         style: TextStyle(color: customColors.mainOrange),
         onChanged: (String? newValue) async {
           try {
-            setState(() {
-              switch (newValue) {
-                case 'Diesel':
-                  //Get Diesel  data
+            switch (newValue) {
+              case 'Diesel':
+                var station;
+                //Get Diesel  data
+                //this.station = GasStationService.getLowestDiesel() as Station;
+                Future.delayed(
+                    const Duration(seconds: 1),
+                    () async => {
+                          station =
+                              (await GasStationService.getLowestDiesel())!,
+                          setState(() {
+                            this._station = station;
+                          }),
+                          print('Home Screen: line 61  ${station.name}')
+                        });
 
-                  Future.delayed(
-                      const Duration(seconds: 1),
-                      () async => {
-                            this.station =
-                                (await GasStationService.getLowestDiesel())!
-                          });
+                break;
 
-                  break;
+              case 'USLD':
+                var station;
+                //Get USLD Data
+                // this.station = GasStationService.getLowestUSLD as Station;
 
-                case 'USLD':
-                  //Get USLD Data
-                  Future.delayed(
-                      const Duration(seconds: 1),
-                      () async => {
-                            this.station =
-                                (await GasStationService.getLowestUSLD())!
-                          });
-                  break;
+                Future.delayed(
+                    const Duration(seconds: 1),
+                    () async => {
+                          station = (await GasStationService.getLowestUSLD())!,
+                          setState(() {
+                            this._station = station;
+                          }),
+                          print('Home Screen: line 81  ${station.name}')
+                        });
 
-                case 'Premium':
-                  Future.delayed(
-                      const Duration(seconds: 1),
-                      () async => {
-                            this.station =
-                                (await GasStationService.getLowestPremium())!
-                          });
-                  break;
-                default:
-              }
-            });
+                break;
+
+              case 'Premium':
+                var station;
+                //  var station = await GasStationService.getLowestPremium();
+                Future.delayed(
+                    const Duration(seconds: 1),
+                    () async => {
+                          station =
+                              (await GasStationService.getLowestPremium())!,
+                          setState(() {
+                            this._station = station;
+                          }),
+                          print('Home Screen: line 97  ${station?.name}')
+                        });
+
+                break;
+              default:
+            }
           } catch (err) {
             print(err);
           }
@@ -103,12 +120,13 @@ class _HomePageState extends State<HomePage> {
       SizedBox(width: 20.0),
       Text('Nearest gas station'),
       SizedBox(height: 10.0),
+
       //HomeCardViewPage(),
       SizedBox(height: 20.0, width: 20.0),
       Text('Cheapest gas stations near you'),
       SizedBox(height: 10.0),
 
-      HomeCardViewPage(this.station),
+      HomeCardViewPage(this._station),
     ]);
   }
 }

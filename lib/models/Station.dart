@@ -36,15 +36,15 @@ class Station {
   String latitude;
   String reviewsAmount;
   String id;
-  double premium;
-  double diesel;
+  String premium;
+  String diesel;
   String openTime;
   String name;
   String password;
   String closeTime;
   String longitude;
-  double ulsd;
-  double regular;
+  String ulsd;
+  String regular;
 
   factory Station.fromJson(Map<String, dynamic> json) => Station(
         telephone: json["telephone"],
@@ -55,15 +55,15 @@ class Station {
         latitude: json["latitude"],
         reviewsAmount: json["reviewsAmount"],
         id: json["id"],
-        premium: json["premium"].toDouble(),
-        diesel: json["diesel"].toDouble(),
+        premium: json["premium"],
+        diesel: json["diesel"],
         openTime: json["openTime"],
         name: json["name"],
         password: json["password"],
         closeTime: json["closeTime"],
         longitude: json["longitude"],
-        ulsd: json["ULSD"].toDouble(),
-        regular: json["regular"].toDouble(),
+        ulsd: json["ULSD"],
+        regular: json["regular"],
       );
 
   Map<String, dynamic> toJson() => {

@@ -83,7 +83,7 @@ class GasStationService {
     );
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      print('Station Service: line 86 $jsonString');
+      //  print('Station Service: line 86 $jsonString');
       return stationFromJson(jsonString);
     } else {
       Fluttertoast.showToast(
@@ -109,7 +109,7 @@ class GasStationService {
     );
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      print('Station Service: line 111 $jsonString');
+      // print('Station Service: line 111 $jsonString');
       return stationFromJson(jsonString);
     } else {
       Fluttertoast.showToast(
@@ -135,7 +135,7 @@ class GasStationService {
     );
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      print('Station Service: line 137 $jsonString');
+      // print('Station Service: line 137 $jsonString');
       return stationFromJson(jsonString);
     } else {
       Fluttertoast.showToast(
