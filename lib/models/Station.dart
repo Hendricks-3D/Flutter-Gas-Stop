@@ -28,7 +28,6 @@ class Station {
     required this.ulsd,
     required this.regular,
   });
-
   String telephone;
   String email;
   String ratings;
@@ -37,7 +36,7 @@ class Station {
   String latitude;
   String reviewsAmount;
   String id;
-  String premium;
+  double premium;
   double diesel;
   String openTime;
   String name;
@@ -45,7 +44,7 @@ class Station {
   String closeTime;
   String longitude;
   double ulsd;
-  String regular;
+  double regular;
 
   factory Station.fromJson(Map<String, dynamic> json) => Station(
         telephone: json["telephone"],
@@ -56,7 +55,7 @@ class Station {
         latitude: json["latitude"],
         reviewsAmount: json["reviewsAmount"],
         id: json["id"],
-        premium: json["premium"],
+        premium: json["premium"].toDouble(),
         diesel: json["diesel"].toDouble(),
         openTime: json["openTime"],
         name: json["name"],
@@ -64,7 +63,7 @@ class Station {
         closeTime: json["closeTime"],
         longitude: json["longitude"],
         ulsd: json["ULSD"].toDouble(),
-        regular: json["regular"],
+        regular: json["regular"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {

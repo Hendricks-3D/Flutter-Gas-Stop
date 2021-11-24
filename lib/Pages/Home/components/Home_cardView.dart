@@ -1,8 +1,14 @@
 import 'package:GasStop/Helper/CustomColors.dart';
 import 'package:GasStop/Helper/handleGeolocation.dart';
+import 'package:GasStop/models/Station.dart';
 import 'package:flutter/material.dart';
 
 class HomeCardViewPage extends StatefulWidget {
+  //This constructor is use to collect the data being passed
+  Station
+      station; //this variable is accessed by widget.station.name in _HomeCardViewPageState
+  HomeCardViewPage(this.station);
+
   @override
   _HomeCardViewPageState createState() => _HomeCardViewPageState();
 }
@@ -47,10 +53,10 @@ class _HomeCardViewPageState extends State<HomeCardViewPage> {
                               Icon(Icons.chat,
                                   color: customColors.mainOrange, size: 20),
                               SizedBox(width: 5),
-                              Text('4.2'),
+                              Text(widget.station.ratings),
                             ],
                           ),
-                          Text('32 reviews')
+                          Text('${widget.station.reviewsAmount} reviews')
                         ],
                       ),
                       SizedBox(width: 160.0),
@@ -62,14 +68,14 @@ class _HomeCardViewPageState extends State<HomeCardViewPage> {
                           Text('Info', style: TextStyle(fontSize: 20.0)),
                           SizedBox(height: 20.0),
                           Text('Status', style: TextStyle(fontSize: 18.0)),
-                          Text('Open',
+                          Text(widget.station.openTime,
                               style: TextStyle(color: customColors.mainOrange)),
                           Text('Air Pump', style: TextStyle(fontSize: 18.0)),
-                          Text('Yes',
+                          Text(widget.station.airPump,
                               style: TextStyle(color: customColors.mainOrange)),
                           SizedBox(height: 40.0),
                           Text('Price', style: TextStyle(fontSize: 18.0)),
-                          Text('\$160.00',
+                          Text('\$ ${widget.station.premium}',
                               style: TextStyle(
                                   color: customColors.mainOrange,
                                   fontSize: 21.0)),

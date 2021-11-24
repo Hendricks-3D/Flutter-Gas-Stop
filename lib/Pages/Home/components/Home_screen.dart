@@ -15,7 +15,24 @@ class _HomePageState extends State<HomePage> {
   String dropdownValue = 'USLD';
   GasStationService gasStationService = new GasStationService();
   SingleStationResponse singleStationResponse = new SingleStationResponse();
-  late Station station;
+  Station station = new Station(
+      telephone: '',
+      email: '',
+      ratings: '',
+      address: '',
+      airPump: '',
+      latitude: '',
+      reviewsAmount: '',
+      id: '',
+      premium: 0.0,
+      diesel: 0.0,
+      openTime: '',
+      name: '',
+      password: '',
+      closeTime: '',
+      longitude: '',
+      ulsd: 0.0,
+      regular: 0.0);
   @override
   Widget build(BuildContext context) {
     /*TODO: the home screen will get the gas station
@@ -31,8 +48,39 @@ class _HomePageState extends State<HomePage> {
         onChanged: (String? newValue) async {
           try {
             setState(() {
-              GasStationService.getLowestRegular().then(
-                  (data) => {this.station = data!, print(this.station.name)});
+              switch (newValue) {
+                case 'Diesel':
+                  //Get Diesel  data
+
+                  Future.delayed(
+                      const Duration(seconds: 1),
+                      () async => {
+                            this.station =
+                                (await GasStationService.getLowestDiesel())!
+                          });
+
+                  break;
+
+                case 'USLD':
+                  //Get USLD Data
+                  Future.delayed(
+                      const Duration(seconds: 1),
+                      () async => {
+                            this.station =
+                                (await GasStationService.getLowestUSLD())!
+                          });
+                  break;
+
+                case 'Premium':
+                  Future.delayed(
+                      const Duration(seconds: 1),
+                      () async => {
+                            this.station =
+                                (await GasStationService.getLowestPremium())!
+                          });
+                  break;
+                default:
+              }
             });
           } catch (err) {
             print(err);
@@ -55,11 +103,12 @@ class _HomePageState extends State<HomePage> {
       SizedBox(width: 20.0),
       Text('Nearest gas station'),
       SizedBox(height: 10.0),
-      HomeCardViewPage(),
+      //HomeCardViewPage(),
       SizedBox(height: 20.0, width: 20.0),
       Text('Cheapest gas stations near you'),
       SizedBox(height: 10.0),
-      HomeCardViewPage(),
+
+      HomeCardViewPage(this.station),
     ]);
   }
 }

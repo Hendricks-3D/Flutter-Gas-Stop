@@ -57,6 +57,7 @@ class GasStationService {
     );
     if (response.statusCode == 200) {
       var jsonString = response.body;
+      print('Station Service: line 60 $jsonString');
       return stationFromJson(jsonString);
     } else {
       Fluttertoast.showToast(
@@ -70,6 +71,83 @@ class GasStationService {
     }
   }
 
+  static Future<Station?> getLowestPremium() async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var response = await client.get(
+      Uri.parse('https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
+          '/getLowestPremiumPrice'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      print('Station Service: line 86 $jsonString');
+      return stationFromJson(jsonString);
+    } else {
+      Fluttertoast.showToast(
+          msg: 'please check your internet',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return null;
+    }
+  }
+
+  static Future<Station?> getLowestDiesel() async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var response = await client.get(
+      Uri.parse('https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
+          '/getLowestDieselPrice'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      print('Station Service: line 111 $jsonString');
+      return stationFromJson(jsonString);
+    } else {
+      Fluttertoast.showToast(
+          msg: 'please check your internet',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return null;
+    }
+  }
+
+  static Future<Station?> getLowestUSLD() async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var response = await client.get(
+      Uri.parse('https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
+          '/getLowestULSDPrice'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      print('Station Service: line 137 $jsonString');
+      return stationFromJson(jsonString);
+    } else {
+      Fluttertoast.showToast(
+          msg: 'please check your internet',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return null;
+    }
+  }
   // Future<Station?> getLowestRegular() async {
   //   final prefs = await SharedPreferences.getInstance();
   //   token = prefs.getString('token');
