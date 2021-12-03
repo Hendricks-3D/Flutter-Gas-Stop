@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:GasStop/Helper/apiUrls.dart';
 import 'package:GasStop/Helper/handleGeolocation.dart';
-import 'package:GasStop/models/GasStation_Models/gasStation.dart';
 import 'package:GasStop/models/Station.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -23,16 +22,19 @@ class GasStationService {
   //GasStationService(this._firebaseAuth);
 
   //Get All Gas Stations
-  Future<Response?> getAllGasStation() async {
+  static Future<List<Station?>?> getAllGasStation() async {
     final prefs = await SharedPreferences.getInstance();
-    token = prefs.getString('token');
-    dio.options.headers['Authorization'] = 'Bearer $token';
-
+    var token = prefs.getString('token');
+    var response;
     try {
-      //  print(URLS.getAllGasStationsUrl);
-      return await dio.get(
-          'https://us-central1-gasstop-a7ea1.cloudfunctions.net/app/allGasStations');
-    } on DioError catch (err) {
+      response = await client.get(
+        Uri.parse(
+            'https://us-central1-gasstop-a7ea1.cloudfunctions.net/app/allGasStations'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+    } on SocketException catch (err) {
       Fluttertoast.showToast(
           msg: err.message,
           toastLength: Toast.LENGTH_SHORT,
@@ -40,28 +42,54 @@ class GasStationService {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
+    }
 
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return stationFromJsonList(jsonString);
+    } else {
+      print('Station Service: line 52 data not recieved');
+      Fluttertoast.showToast(
+          msg: 'please check your internet connection.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
       return null;
     }
   }
 
+//--http requests
   static Future<Station?> getLowestRegular() async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
-    var response = await client.get(
-      Uri.parse('https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
-          '/getLowestRegularPrice'),
-      headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $token',
-      },
-    );
+    var response;
+    try {
+      response = await client.get(
+        Uri.parse('https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
+            '/getLowestRegularPrice'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+    } on SocketException catch (err) {
+      Fluttertoast.showToast(
+          msg: err.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+
     if (response.statusCode == 200) {
       var jsonString = response.body;
       print('Station Service: line 60 $jsonString');
       return stationFromJson(jsonString);
     } else {
       Fluttertoast.showToast(
-          msg: 'please check your internet',
+          msg: 'please check your internet connection.',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.red,
@@ -74,13 +102,25 @@ class GasStationService {
   static Future<Station?> getLowestPremium() async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
-    var response = await client.get(
-      Uri.parse('https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
-          '/getLowestPremiumPrice'),
-      headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $token',
-      },
-    );
+    var response;
+    try {
+      response = await client.get(
+        Uri.parse('https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
+            '/getLowestPremiumPrice'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+    } on SocketException catch (err) {
+      Fluttertoast.showToast(
+          msg: err.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+
     if (response.statusCode == 200) {
       var jsonString = response.body;
       //  print('Station Service: line 86 $jsonString');
@@ -100,13 +140,26 @@ class GasStationService {
   static Future<Station?> getLowestDiesel() async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
-    var response = await client.get(
-      Uri.parse('https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
-          '/getLowestDieselPrice'),
-      headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $token',
-      },
-    );
+    var response;
+
+    try {
+      response = await client.get(
+        Uri.parse('https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
+            '/getLowestDieselPrice'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+    } on SocketException catch (err) {
+      Fluttertoast.showToast(
+          msg: err.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+
     if (response.statusCode == 200) {
       var jsonString = response.body;
       // print('Station Service: line 111 $jsonString');
@@ -126,13 +179,24 @@ class GasStationService {
   static Future<Station?> getLowestUSLD() async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
-    var response = await client.get(
-      Uri.parse('https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
-          '/getLowestULSDPrice'),
-      headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $token',
-      },
-    );
+    var response;
+    try {
+      response = await client.get(
+        Uri.parse('https://us-central1-gasstop-a7ea1.cloudfunctions.net/app' +
+            '/getLowestULSDPrice'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+    } on SocketException catch (err) {
+      Fluttertoast.showToast(
+          msg: err.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
     if (response.statusCode == 200) {
       var jsonString = response.body;
       // print('Station Service: line 137 $jsonString');
@@ -177,20 +241,20 @@ class GasStationService {
   //Method that will get the closest gas station based on user current location
   //CLosest distance will be 2.5km
   // ignore: non_constant_identifier_names
-  List<GasStation> getListOfClosestGasStation(allGasStationsList) {
-    List<GasStation> closestGasStations = [];
+  List<Station?> getListOfClosestGasStation(allGasStationsList) {
+    List<Station> closestGasStations = [];
     var len = allGasStationsList.length;
     var R = 6378.137; // Radius of earth in KM
     var location = new HandleGeolocation();
 
     for (var i = 0; i < len; i++) {
       var dLat = location.getLatitude() * pi / 180 -
-          int.parse(allGasStationsList[i].latitude) * pi / 180;
+          double.parse(allGasStationsList[i].latitude) * pi / 180;
       var dLon = location.getLongitude() * pi / 180 -
-          int.parse(allGasStationsList[i].longitude) * pi / 180;
+          double.parse(allGasStationsList[i].longitude) * pi / 180;
       var a = sin(dLat / 2) * sin(dLat / 2) +
           cos(location.getLatitude() / 180) *
-              cos(int.parse(allGasStationsList[i].latitude) * pi / 180) *
+              cos(double.parse(allGasStationsList[i].latitude) * pi / 180) *
               sin(dLon / 2) *
               sin(dLon / 2);
       var c = 2 * atan2(sqrt(a), sqrt(1 - a));

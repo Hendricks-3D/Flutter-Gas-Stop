@@ -8,6 +8,13 @@ Station stationFromJson(String str) => Station.fromJson(json.decode(str));
 
 String stationToJson(Station data) => json.encode(data.toJson());
 
+//These methods will  deal with the list like getting all gas Station
+List<Station> stationFromJsonList(String str) =>
+    List<Station>.from(json.decode(str).map((x) => Station.fromJsonList(x)));
+
+String stationToJsonList(List<Station> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJsonList())));
+
 class Station {
   Station({
     required this.telephone,
@@ -84,5 +91,47 @@ class Station {
         "longitude": longitude,
         "ULSD": ulsd,
         "regular": regular,
+      };
+
+//For Handling List
+
+  factory Station.fromJsonList(Map<String, dynamic> json) => Station(
+        telephone: json["telephone"],
+        closeTime: json["closeTime"],
+        reviewsAmount: json["reviewsAmount"],
+        email: json["email"],
+        ratings: json["ratings"],
+        premium: json["premium"],
+        ulsd: json["ULSD"],
+        id: json["id"],
+        longitude: json["longitude"],
+        diesel: json["diesel"],
+        address: json["address"],
+        airPump: json["airPump"],
+        password: json["password"],
+        regular: json["regular"],
+        openTime: json["openTime"],
+        latitude: json["latitude"],
+        name: json["name"],
+      );
+
+  Map<String, dynamic> toJsonList() => {
+        "telephone": telephone,
+        "closeTime": closeTime,
+        "reviewsAmount": reviewsAmount,
+        "email": email,
+        "ratings": ratings,
+        "premium": premium,
+        "ULSD": ulsd,
+        "id": id,
+        "longitude": longitude,
+        "diesel": diesel,
+        "address": address,
+        "airPump": airPump,
+        "password": password,
+        "regular": regular,
+        "openTime": openTime,
+        "latitude": latitude,
+        "name": name,
       };
 }

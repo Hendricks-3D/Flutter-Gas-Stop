@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   String dropdownValue = 'USLD';
   GasStationService gasStationService = new GasStationService();
   SingleStationResponse singleStationResponse = new SingleStationResponse();
-  Station _station = new Station(
+  late Station _cheapStation = new Station(
       telephone: '',
       email: '',
       ratings: '',
@@ -33,11 +33,29 @@ class _HomePageState extends State<HomePage> {
       longitude: '',
       ulsd: '',
       regular: '');
+  //List<Station> _nearestStation = []; //List.filled(3, 0, growable: true);
+  late Station _nearestStation = new Station(
+      telephone: '',
+      email: '',
+      ratings: '',
+      address: '',
+      airPump: '',
+      latitude: '',
+      reviewsAmount: '',
+      id: '',
+      premium: '',
+      diesel: '',
+      openTime: '',
+      name: '',
+      password: '',
+      closeTime: '',
+      longitude: '',
+      ulsd: '',
+      regular: '');
+  String? selectedOption = '';
+
   @override
   Widget build(BuildContext context) {
-    /*TODO: the home screen will get the gas station
-            data then loop through it and render HomeCardviewPage
-    */
     return ListView(children: <Widget>[
       //Drop Down list
       DropdownButton<String>(
@@ -46,55 +64,64 @@ class _HomePageState extends State<HomePage> {
         iconSize: 40.0,
         style: TextStyle(color: customColors.mainOrange),
         onChanged: (String? newValue) async {
+          setState(() {
+            this.selectedOption = newValue;
+            print(this.selectedOption);
+          });
+
           try {
             switch (newValue) {
               case 'Diesel':
                 var station;
                 //Get Diesel  data
-                //this.station = GasStationService.getLowestDiesel() as Station;
                 Future.delayed(
                     const Duration(seconds: 1),
                     () async => {
                           station =
                               (await GasStationService.getLowestDiesel())!,
                           setState(() {
-                            this._station = station;
+                            this._cheapStation = station;
                           }),
                           print('Home Screen: line 61  ${station.name}')
                         });
+
+                //Get the Nearest Station
+                this.getNearestGasStation();
 
                 break;
 
               case 'USLD':
                 var station;
                 //Get USLD Data
-                // this.station = GasStationService.getLowestUSLD as Station;
-
                 Future.delayed(
                     const Duration(seconds: 1),
                     () async => {
                           station = (await GasStationService.getLowestUSLD())!,
                           setState(() {
-                            this._station = station;
+                            this._cheapStation = station;
                           }),
                           print('Home Screen: line 81  ${station.name}')
                         });
-
+                //Get the Nearest Station
+                this.getNearestGasStation();
                 break;
 
               case 'Premium':
                 var station;
-                //  var station = await GasStationService.getLowestPremium();
+                //Get cheapest premium gas Station
                 Future.delayed(
                     const Duration(seconds: 1),
                     () async => {
                           station =
                               (await GasStationService.getLowestPremium())!,
                           setState(() {
-                            this._station = station;
+                            this._cheapStation = station;
                           }),
-                          print('Home Screen: line 97  ${station?.name}')
+                          print('Home Screen: line 120  ${station?.name}')
                         });
+
+                //Get nearest premium gas Station
+                this.getNearestGasStation();
 
                 break;
               default:
@@ -121,12 +148,36 @@ class _HomePageState extends State<HomePage> {
       Text('Nearest gas station'),
       SizedBox(height: 10.0),
 
-      //HomeCardViewPage(),
+      HomeCardViewPage(this._nearestStation, selectedOption),
       SizedBox(height: 20.0, width: 20.0),
       Text('Cheapest gas stations near you'),
       SizedBox(height: 10.0),
 
-      HomeCardViewPage(this._station),
+      HomeCardViewPage(this._cheapStation, selectedOption),
     ]);
   }
+
+  getNearestGasStation() {
+    var nearestStation;
+    List allGasStations = [1];
+    //Get nearest premium gas Station
+    Future.delayed(
+        const Duration(seconds: 1),
+        () async => {
+              print('line 127 ${await GasStationService.getAllGasStation()}'),
+              allGasStations =
+                  (await GasStationService.getAllGasStation()) as List<Station>,
+              nearestStation = this
+                  .gasStationService
+                  .getListOfClosestGasStation(allGasStations),
+              setState(() => {this._nearestStation = nearestStation[0]}),
+              print('Home line 135 ${nearestStation[0].name}')
+            });
+  }
 }
+/**
+ * Current Issues:
+ * I need to find a way  to get the lowest and nearest Gas Station
+ * to fill the variables to prevent the index range error.
+ * 
+ */
